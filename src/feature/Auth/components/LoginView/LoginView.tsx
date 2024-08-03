@@ -21,7 +21,7 @@ export const LoginView = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<LoginInputs>();
   const [loginUser, { isLoading, isSuccess }] = useLoginMutation();
   const [loginResult, setLoginResult] = useState<string | null>(null);
@@ -50,7 +50,7 @@ export const LoginView = () => {
           onClose={() => setLoginResult(null)}
         />
       )}
-      <h1 className="text-xl font-bold mb-4">Login</h1>
+      <h1 className="mb-4 text-xl font-bold">Login</h1>
       <TextInput
         type="text"
         label="Email or username"

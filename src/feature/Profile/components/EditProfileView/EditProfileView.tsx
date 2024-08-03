@@ -21,7 +21,7 @@ export const EditProfileView = () => {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isDirty },
+    formState: { isDirty },
     watch,
   } = useForm<EditProfileInputs>({
     defaultValues: {
