@@ -17,6 +17,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
           script: |
+            source ~/.zshrc
             cd /var/www/photobank.patrykb.pl/frontend
             git pull origin master
             pnpm install
