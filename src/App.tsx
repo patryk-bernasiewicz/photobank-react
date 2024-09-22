@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
+import { StyledToaster } from 'components/StyledToaster/StyledToaster';
 import { MainLayout } from 'components/layouts/MainLayout/MainLayout';
 import { HomePage } from 'feature/Home/HomePage';
 import { AuthLayout } from 'feature/Auth/components/AuthLayout/AuthLayout';
@@ -34,6 +35,7 @@ import { EditProfileView } from 'feature/Profile/components/EditProfileView/Edit
 function App() {
   return (
     <Provider store={store}>
+      <StyledToaster />
       <AuthContextProvider>
         <BrowserRouter>
           <Suspense fallback={<div>Loading...</div>}>

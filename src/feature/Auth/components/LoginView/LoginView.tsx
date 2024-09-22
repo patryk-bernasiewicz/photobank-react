@@ -42,6 +42,9 @@ export const LoginView = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <div>
+        <Link to="/">Go back</Link>
+      </div>
       {location.state?.message && <FlashMessage message={location.state.message} type="success" />}
       {loginResult && (
         <FlashMessage

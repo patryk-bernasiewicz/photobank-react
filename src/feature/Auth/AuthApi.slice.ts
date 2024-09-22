@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { LoginCredentials, RegisterPayload, User } from './types';
-import { BaseQueryFn } from 'src/types/BaseQuery';
+import type { LoginCredentials, RegisterPayload, User } from './types';
+import type { BaseQueryFn } from 'src/types/BaseQuery';
 
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
 

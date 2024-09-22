@@ -23,7 +23,7 @@ export const ConfirmEmailView = () => {
       .catch((err) => {
         console.log('===== err: ', err);
       });
-  }, []);
+  }, [token]);
 
   return <pre>{JSON.stringify({ token, isLoading }, null, 2)}</pre>;
 };

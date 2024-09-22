@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { FlashMessage } from 'components/FlashMessage/FlashMessage';
 import { Link } from 'components/Link/Link';
 import { Button } from 'components/Button/Button';
+import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 type RegisterInputs = {
   email: string;
@@ -13,39 +15,54 @@ type RegisterInputs = {
   verifyPassword: string;
 };
 
+const PASSWORD_MIN_LENGTH = 6;
+
 export const RegisterView = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
     watch,
-  } = useForm<RegisterInputs>();
+  } = useForm<RegisterInputs>({
+    mode: 'onChange',
+  });
   const [registerUser, { isSuccess, isLoading }] = useRegisterMutation();
-  const [registeResult, setRegisterResult] = useState<string | null>(null);
+  const [registerResult, setRegisterResult] = useState<string[] | null>(null);
 
   const onSubmit: SubmitHandler<RegisterInputs> = async (data) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { verifyPassword, ...payload } = data;
     registerUser(payload)
       .unwrap()
-      .then((result) => console.log('Register success', result))
+      .then(() => {
+        toast('Registration success', {
+          description: 'Check your e-mail for confirmation link.',
+          icon: '🎉',
+        });
+        navigate('/');
+      })
       .catch((error) => {
         if ('data' in error) {
-          setRegisterResult(error.data.message);
+          const messages = Array.isArray(error.data.message) ? error.data.message : [error.data.message];
+          setRegisterResult(messages);
         }
       });
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-      {registeResult && (
+    <form onSubmit={handleSubmit(onSubmit)} className="flex w-52 flex-col gap-4">
+      <div>
+        <Link to="/">Go back</Link>
+      </div>
+      {Array.isArray(registerResult) && (
         <FlashMessage
-          message={`Register ${isSuccess ? 'success' : 'error'}`}
+          message={registerResult.join(', ')}
           type={isSuccess ? 'success' : 'error'}
           onClose={() => setRegisterResult(null)}
         />
       )}
-      <h1 className="text-xl font-bold mb-4">Register account</h1>
+      <h1 className="mb-4 text-xl font-bold">Register account</h1>
       <TextInput
         type="email"
         label="Email"
@@ -74,6 +91,10 @@ export const RegisterView = () => {
         error={errors.password}
         {...register('password', {
           required: 'Password is required',
+          minLength: {
+            value: PASSWORD_MIN_LENGTH,
+            message: `Password must be at least ${PASSWORD_MIN_LENGTH} characters long`,
+          },
           disabled: isLoading,
         })}
       />
